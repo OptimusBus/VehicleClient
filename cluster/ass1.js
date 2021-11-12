@@ -1,0 +1,1 @@
+[{"vehicleId":"VE0005","departures":["126373","84458"]},{"vehicleId":"VE0006","departures":["27222"]},{"vehicleId":"VE0004","departures":["77299","10955","48061","139560","149210"]},{"vehicleId":"VE0001","departures":["137190","153307","153307"]},{"vehicleId":"VE0001","departures":["110799","71775","110799","110799"]}]

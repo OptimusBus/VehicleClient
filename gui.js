@@ -1,0 +1,23 @@
+$(document).ready(function(){
+    $('.b-home').on("click", function(){
+        clearGui();
+    });
+    $('.b-standings').on("click", function(){
+        showAllStandings();
+    });
+    $('.b-pickup').on("click", function(){
+        showAllPickups();
+    });
+    $('.b-location').on("click", function(){
+        showCurrentPosition();
+    });
+    $('.b-route').on("click", function(){
+
+    });
+    $('.b-failure').on("click", function(){
+        createFailureMessage();
+    });
+    $('.b-code').on("click", function(){
+        createCodeMessage();
+    });
+});

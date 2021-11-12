@@ -1,0 +1,115 @@
+body{
+	border:0;
+	margin:0;
+}
+.map{
+	height:100vh;
+	width:100%;	
+}
+.attribution{
+	font-size:16px;
+	font-weight:bold;
+}
+.leaflet-top.leaflet-right{
+	display:none;
+}
+.button-chooser{
+    display: table;
+    width: 80px;
+    position: absolute;
+    top: 10px;
+    height: 520px;
+    background-color: #F0F0F0;
+    right: 10px;
+    z-index: 100000000;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.7);
+}
+.single-button{
+    display:table-row;
+    width:100%;
+    text-align:center;
+}
+.butt{
+    font-size: 30px !important;
+}
+.single-button-inner{
+    vertical-align: middle;
+    cursor: pointer;
+    display: table-cell;
+    padding: 16px 16px;
+    border: 5px solid #0000004d;
+}
+.single-button-inner:hover{
+    border: 5px solid #000000;
+}
+.b-standings{
+    color:red !important;
+}
+.b-pickup{
+    color:green !important;
+}
+.message-box{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100000000000000000;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.message-box > .box{
+    width: 500px;
+    position: absolute;
+    height: 200px;
+    background-color: white;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.message-box > .box > .box-title{
+    height: 35px;
+    background-color: #2828bc;
+    color: white;
+    text-align: left;
+    padding: 0px 30px;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: bold;
+}
+.message-box > .box > .box-text{
+    width: 460px;
+    height: 20px;
+    padding: 15px;
+    font-size: 18px;
+}
+.message-box > .box > .buttons-section > .box-button{
+    display: inline-block;
+    width: 100px;
+    height: 22px;
+    padding: 10px;
+    text-align: center;
+    line-height: 22px;
+    border: 2px solid gray;
+    cursor: pointer;
+} 
+.message-box > .box > .buttons-section > .box-button:hover{
+    border: 2px solid black;
+}   
+.message-box > .box > .buttons-section{
+    text-align: right;
+    padding: 0px 5px;
+    position: absolute;
+    bottom: 5px;
+    right: 0px;
+}
+.message-box > .box > .box-message-input {
+    text-align: center;
+}
+.message-box > .box > .box-message-input > .message-input{
+    width: 95%;
+    padding: 0px 5px;
+    margin: 3px 0px;
+    border: 1px solid;
+    font-size: 20px;
+    text-align: center;
+}
