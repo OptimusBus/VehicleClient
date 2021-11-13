@@ -19,6 +19,7 @@ var pickupPointsGroup;
 var standingPointsGroup;
 var currentRoute;
 var supportVehicle;
+var vehicleLogged;
 
 $(document).ready(function(){
 	$.get("data/stdp.js", function(res){
@@ -53,6 +54,23 @@ $(document).ready(function(){
     pickupPointsGroup = L.layerGroup().addTo(map);
     currentRoute = L.layerGroup().addTo(map);
 });
+
+function logMe(){
+	let us = $('.username-login-box').val();
+	let pw = $('.password-login-box').val();
+	let s = new Object();
+	s.username = us;
+	s.password = pw;
+	let jsonString = JSON.stringify(s);
+	$.ajax({
+		data : jsonString,
+    	contentType : 'application/json',
+    	type : 'POST',
+		url: 'http://gateway-optimusbus.router.default.svc.cluster.local/optimusbus/security/authVehicle'
+	}).done(function(a){
+		console.log(a);
+	});
+}
 
 function clearGui(){
     positionGroup.clearLayers();
