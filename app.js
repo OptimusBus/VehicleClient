@@ -3,6 +3,7 @@ window.LRM = {
 };
 
 var map = L.map('map', { scrollWheelZoom: true}).setView([45.763420, 4.834277], 12);
+var baseAddress = "http://gateway-optimusbus.router.default.svc.cluster.local/optimusbus/";
 var standingPoints;
 var pickupPoints;
 var vehicles;
@@ -19,15 +20,18 @@ var pickupPointsGroup;
 var standingPointsGroup;
 var currentRoute;
 var supportVehicle;
-var vehicleLogged;
+var thisVehicle;
+var thisStanding;
+var thisRoute;
 
 $(document).ready(function(){
-	$.get("data/stdp.js", function(res){
-		standingPoints = JSON.parse(res);
+	$.get(baseAddress + "roadnetwork/standingpoint", function(res){
+		standingPoints = res;
 	});
-	$.get("data/pckp.js", function(res){
-		pickupPoints = JSON.parse(res);
+	$.get(baseAddress + "roadnetwork/pickuppoint", function(res){
+		pickupPoints = res;
 	});
+	/*
 	$.get("cluster/vehicles.js", function(res){
 		vehicles = JSON.parse(res);
 	});
@@ -40,6 +44,7 @@ $(document).ready(function(){
 	$.get("cluster/ass1.js", function(res){
 		associations1 = JSON.parse(res);
 	});
+	*/
 	L.tileLayer(LRM.tileLayerUrl, {
 		attribution: '<font class="attribution">OptimusBus</font>'
 	}).addTo(map);
@@ -55,21 +60,97 @@ $(document).ready(function(){
     currentRoute = L.layerGroup().addTo(map);
 });
 
+function startRouteReq(){
+	setInterval(sendRouteRequest, 180000);
+}
+
 function logMe(){
+	showLoader();
 	let us = $('.username-login-box').val();
 	let pw = $('.password-login-box').val();
 	let s = new Object();
 	s.username = us;
 	s.password = pw;
+	let url = baseAddress + 'security/authVehicle';
 	let jsonString = JSON.stringify(s);
 	$.ajax({
 		data : jsonString,
-    	contentType : 'application/json',
+		contentType : 'application/json',
     	type : 'POST',
-		url: 'http://gateway-optimusbus.router.default.svc.cluster.local/optimusbus/security/authVehicle'
-	}).done(function(a){
-		console.log(a);
+		url: url
+	}).done(function(data, textStatus, xhr){
+		vehicleId = data.vehicleId;
+		getVehicle(vehicleId);
+		hideLogin();
+	}).fail(function(){
+		$('.login-response').html("Invalid Username/Password");
+	}).always(function(){
+		hideLoader();
 	});
+}
+
+function getVehicle(id){
+	let url = baseAddress + 'vehicles/'+id;
+	$.ajax({
+    	contentType : 'application/json',
+    	type : 'GET',
+		url: url
+	}).done(function(data, textStatus, xhr){
+		thisVehicle = data;
+		getSingleLocation(parseInt(thisVehicle.standingPoint));
+		fillGui();
+		startRouteReq();
+	}).fail(function(){
+		console.log("vehicle not found");
+	}).always(function(){
+		
+	});
+}
+
+function getSingleLocation(osmid){
+	let url = baseAddress + 'roadnetwork/' + osmid;
+	$.ajax({
+    	contentType : 'application/json',
+    	type : 'GET',
+		url: url
+	}).done(function(data, textStatus, xhr){
+		thisStanding = data;
+	}).fail(function(){
+		console.log("node not found");
+	}).always(function(){
+		
+	});
+}
+
+function fillGui(){
+	$('.vehicleid-box').html(thisVehicle.vehicleId);
+	$('.vehiclestatus-box').html(thisVehicle.state);
+	$('.occupancy-box').html(thisVehicle.currentOccupancy);
+}
+
+function showThisStanding(){
+	let element = thisStanding;
+	let tit = element.location.latitude + " " + element.location.longitude + " " + element.nodeId;
+	let popup = thisVehicle.vehicleId + "<br>Pickup Point:<br>" + element.nodeId + "<br" + element.location.latitude + " " + element.location.longitude;
+	L.marker([element.location.latitude, element.location.longitude], {icon: standingPointIcon, title: tit}).bindPopup(popup).addTo(standingPointsGroup);
+	map.fitBounds([[element.location.latitude, element.location.longitude], [element.location.latitude, element.location.longitude]]);
+}
+
+function collapseMenu(){
+	if($('.vehicle-collapse').is(":visible")) $('.vehicle-collapse').hide();
+	else $('.vehicle-collapse').show();
+}
+
+function hideLogin(){
+	$('.login-overlay').hide();
+}
+
+function showLoader(){
+	$('.loader-wrapper').show();
+}
+
+function hideLoader(){
+	$('.loader-wrapper').hide();
 }
 
 function clearGui(){
@@ -92,12 +173,12 @@ function clearStandingPoints(){
 
 function showAllMarks(){
 	standingPoints.forEach(element => {
-		let tit = element.coordinate.latitude + " " + element.coordinate.longitude + " " + element.osmid;
-		L.marker([element.coordinate.latitude, element.coordinate.longitude], {icon: standingPointIcon, title: tit}).addTo(standingPointsGroup);
+		let tit = element.location.latitude + " " + element.location.longitude + " " + element.osmid;
+		L.marker([element.location.latitude, element.location.longitude], {icon: standingPointIcon, title: tit}).addTo(standingPointsGroup);
 	});
 	pickupPoints.forEach(element => {
-		let tit = element.coordinate.latitude + " " + element.coordinate.longitude + " " + element.osmid;
-		L.marker([element.coordinate.latitude, element.coordinate.longitude], {icon: pickupPointIcon, title: tit}).addTo(pickupPointsGroup);
+		let tit = element.location.latitude + " " + element.location.longitude + " " + element.osmid;
+		L.marker([element.location.latitude, element.location.longitude], {icon: pickupPointIcon, title: tit}).addTo(pickupPointsGroup);
 	});
 	map.fitBounds([[45.5176331, 5.1322809], [45.98289006, 4.6349013]]);
 }
@@ -108,9 +189,9 @@ function showAllPickups(){
         return false;
     }
     pickupPoints.forEach(element => {
-		let tit = element.coordinate.latitude + " " + element.coordinate.longitude + " " + element.osmid;
+		let tit = element.location.latitude + " " + element.location.longitude + " " + element.osmid;
         let popup = "Pickup Point:<br>" + element.osmid;
-		L.marker([element.coordinate.latitude, element.coordinate.longitude], {icon: pickupPointIcon, title: tit}).bindPopup(popup).openPopup().addTo(pickupPointsGroup);
+		L.marker([element.location.latitude, element.location.longitude], {icon: pickupPointIcon, title: tit}).bindPopup(popup).openPopup().addTo(pickupPointsGroup);
 	});
     map.fitBounds([[45.5176331, 5.1322809], [45.98289006, 4.6349013]]);
 }
@@ -121,9 +202,9 @@ function showAllStandings(){
         return false;
     }
     standingPoints.forEach(element => {
-		let tit = element.coordinate.latitude + " " + element.coordinate.longitude + " " + element.osmid;
+		let tit = element.location.latitude + " " + element.location.longitude + " " + element.osmid;
         let popup = "Standing Point:<br>" + element.osmid;
-		L.marker([element.coordinate.latitude, element.coordinate.longitude], {icon: standingPointIcon, title: tit}).bindPopup(popup).openPopup().addTo(standingPointsGroup);
+		L.marker([element.location.latitude, element.location.longitude], {icon: standingPointIcon, title: tit}).bindPopup(popup).openPopup().addTo(standingPointsGroup);
 	});
     map.fitBounds([[45.5176331, 5.1322809], [45.98289006, 4.6349013]]);
 }
@@ -246,14 +327,29 @@ function calcBounds(waypoints){
 }
 
 function calculatePosition(){
-	return [45.6174881, 4.7505543];
+	return [thisVehicle.location.latitude, thisVehicle.location.longitude];
 }
 
 function testMark(){
-	let waypoints = [L.latLng([45.6174881, 4.7505543, 0]),
-					L.latLng([45.9761659, 4.6982373, 1]),
-					L.latLng([45.6540969, 5.0962576, 0]),
-					L.latLng([45.7606675, 4.8358755, 2])];
+	let waypoints = [L.latLng([45.6174881, 4.7505543]),
+					L.latLng([45.9761659, 4.6982373]),
+					L.latLng([45.6540969, 5.0962576]),
+					L.latLng([45.7606675, 4.8358755])];
+	let bounds = calcBounds(waypoints);
+	let p1 = bounds[0];
+	let p2 = bounds[1];
+	routingControl.setWaypoints(waypoints);
+	map.fitBounds([[p1.x, p1.y], [p2.x, p2.y]]);
+}
+
+function showRoute(){
+	routingControl.setWaypoints();
+	let waypoints = [];
+	let route = thisRoute.route;
+	Object.entries(route).forEach(function(e){ 
+		element = e[1];
+		waypoints.push(L.latLng([element.location.latitude, element.location.longitude]));
+	});
 	let bounds = calcBounds(waypoints);
 	let p1 = bounds[0];
 	let p2 = bounds[1];
@@ -270,24 +366,110 @@ function createRoutingControl(){
 		useZoomParameter: true,
 		routeWhileDragging: false,
 		createMarker: function(i, wp) {
-			if(wp.latLng.alt === 0){
-				return L.marker(wp.latLng, {
-					icon: standingPointIcon
-				}).bindPopup("Standing Point, Waypoint numero: " + i).openPopup();
-			} else if(wp.latLng.alt === 1){
-				return L.marker(wp.latLng, {
-					icon: pickupPointIcon
-				}).bindPopup("Pickup Point, Waypoint numero: " + i).openPopup();
-			}else if(wp.latLng.alt === 2){
-				return L.marker(wp.latLng, {
-					icon: transitionIcon
-				}).bindPopup("Transition Point, Waypoint numero: " + i).openPopup();
-			}else{
-				return L.marker(wp.latLng, {
-					icon: purple
-				}).bindPopup("Pickup Point, Waypoint numero: " + i).openPopup();
-			}
+			let x = i + 1;
+			return L.marker(wp.latLng, {
+				icon: L.icon.glyph({ glyph: x, iconUrl: "/optimusbus/VehicleClient/assets/waypoint.png", glyphColor: 'black', glyphSize: '20px' })
+			}).bindPopup("Pickup Point, Waypoint numero: " + x).openPopup();
 		}
+	});
+}
+
+function sendSupportRequest(message=false){
+	showLoader();
+	let id = thisVehicle.vehicleId;
+	let url = baseAddress + 'vehicles/support?vehicleId=' + id;
+	var l = new XMLHttpRequest(); 
+	l.open("GET", url); 
+	var readyStateChange = function(){
+		if (l.readyState == 4) {
+			hideLoader();
+			if(message){
+				createMessage("Failure Request", "Request sent, Vehicle " + l.responseText + " is coming");
+				$('.message-box').find('.button-confirm').on("click", function(){
+					$('.message-box').hide();
+					$('.message-box').find('.button-confirm').off("click")
+					$('.message-box').find('.button-discard').off("click")
+				});
+			}
+			if(!message){
+				createMessage("Support request", "Vehicle " + l.responseText + " is coming");
+				$('.message-box').find('.button-confirm').on("click", function(){
+					$('.message-box').hide();
+					$('.message-box').find('.button-confirm').off("click")
+					$('.message-box').find('.button-discard').off("click")
+				});
+			}
+		}else{
+			hideLoader();
+		}
+	};
+	l.onload = readyStateChange;
+	l.send();
+}
+
+function sendRouteRequest(){
+	showLoader();
+	let id = thisVehicle.vehicleId;
+	let url = baseAddress + 'vehicles/getRoute?vehicleId=' + id;
+	$.ajax({
+    	contentType : 'application/json',
+    	type : 'GET',
+		url: url
+	}).done(function(data, textStatus, xhr){
+		hideLoader();
+		thisRoute = data;
+		showRoute();
+	}).fail(function(){
+		hideLoader();
+		return false;
+	}).always(function(){
+		hideLoader();
+	});
+}
+
+function sendFailureRequest(){
+	showLoader();
+	let id = thisVehicle.vehicleId;
+	let url = baseAddress + 'vehicles/failure?vehicleId=' + id;
+	$.ajax({
+    	contentType : 'application/json',
+    	type : 'GET',
+		url: url
+	}).done(function(){
+		sendSupportRequest(true);
+	}).fail(function(){
+		hideLoader();
+		return false;
+	}).always(function(){
+		
+	});
+}
+
+function confirmBooking(id, code){
+	showLoader();
+	let s = new Object();
+	s.bookingId = id;
+	s.code = code;
+	let url = baseAddress + 'bookings/confirm';
+	let jsonString = JSON.stringify(s);
+	$.ajax({
+		data : jsonString,
+		contentType : 'application/json',
+    	type : 'POST',
+		url: url
+	}).done(function(data, textStatus, xhr){
+		createMessage("Code Request", "Code Sent: " + data);
+		$('.message-box').find('.button-confirm').on("click", function(){
+			$('.message-box').hide();
+			$('.message-box').find('.button-confirm').off("click")
+			$('.message-box').find('.button-discard').off("click")
+		});		
+	}).fail(function(){
+		hideLoader();
+		return false;
+	}).always(function(){
+		hideLoader();
+		return false;
 	});
 }
 
@@ -296,15 +478,7 @@ function createCodeMessage(){
     $('.message-box').find('.button-confirm').on("click", function(){
         let code = $('.message-box').find('.code-input').val();
         let id = $('.message-box').find('.booking-input').val();
-        console.log("sending code request: ", id, code);
-        $('.message-box').find('.button-confirm').off("click")
-        $('.message-box').find('.button-discard').off("click")
-        createMessage("Code Request", "Code Sent: RESPONSE");
-        $('.message-box').find('.button-confirm').on("click", function(){
-            $('.message-box').hide();
-            $('.message-box').find('.button-confirm').off("click")
-            $('.message-box').find('.button-discard').off("click")
-        });
+        confirmBooking(id, code);
     });
     $('.message-box').find('.button-discard').on("click", function(){
         console.log("discarded");
@@ -318,15 +492,7 @@ function createCodeMessage(){
 function createFailureMessage(){
     createMessage("Failure Request", "Send failure request to the system?", true);
     $('.message-box').find('.button-confirm').on("click", function(){
-        console.log("sending failure request");
-        $('.message-box').find('.button-confirm').off("click")
-        $('.message-box').find('.button-discard').off("click")
-        createMessage("Failure Request", "Request sent, Vehicle " + supportVehicle + " is coming");
-        $('.message-box').find('.button-confirm').on("click", function(){
-            $('.message-box').hide();
-            $('.message-box').find('.button-confirm').off("click")
-            $('.message-box').find('.button-discard').off("click")
-        });
+        sendFailureRequest();
     });
     $('.message-box').find('.button-discard').on("click", function(){
         console.log("discarded");

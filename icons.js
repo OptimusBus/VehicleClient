@@ -1,6 +1,6 @@
 var pickupPointIcon = L.icon({
-    iconUrl: 'assets/pickuppoint.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/pickuppoint.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -9,8 +9,8 @@ var pickupPointIcon = L.icon({
 });
 
 var standingPointIcon = L.icon({
-    iconUrl: 'assets/standingpoint.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/standingpoint.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -19,8 +19,8 @@ var standingPointIcon = L.icon({
 });
 
 var transitionIcon = L.icon({
-    iconUrl: 'assets/transition.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/transition.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -29,15 +29,15 @@ var transitionIcon = L.icon({
 });
 
 var positionIcon = L.icon({
-    iconUrl: 'assets/currentposition.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/currentposition.png',
     iconSize:     [41, 41], 
     iconAnchor:   [20, 20],  
     popupAnchor:  [-3, -26] 
 });
 
 var black = L.icon({
-    iconUrl: 'assets/black.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/black.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -46,8 +46,8 @@ var black = L.icon({
 });
 
 var gold = L.icon({
-    iconUrl: 'assets/gold.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/gold.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -56,8 +56,8 @@ var gold = L.icon({
 });
 
 var grey = L.icon({
-    iconUrl: 'assets/grey.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/grey.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -66,8 +66,8 @@ var grey = L.icon({
 });
 
 var orange = L.icon({
-    iconUrl: 'assets/orange.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/orange.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -76,8 +76,8 @@ var orange = L.icon({
 });
 
 var purple = L.icon({
-    iconUrl: 'assets/purple.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/purple.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -86,8 +86,8 @@ var purple = L.icon({
 });
 
 var yellow = L.icon({
-    iconUrl: 'assets/yellow.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/yellow.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -96,8 +96,8 @@ var yellow = L.icon({
 });
 
 var i1 = L.icon({
-    iconUrl: 'assets/black.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/black.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -106,8 +106,8 @@ var i1 = L.icon({
 });
 
 var i2 = L.icon({
-    iconUrl: 'assets/gold.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/gold.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -116,8 +116,8 @@ var i2 = L.icon({
 });
 
 var i3 = L.icon({
-    iconUrl: 'assets/grey.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/grey.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -126,8 +126,8 @@ var i3 = L.icon({
 });
 
 var i4 = L.icon({
-    iconUrl: 'assets/orange.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/orange.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -136,8 +136,8 @@ var i4 = L.icon({
 });
 
 var i5 = L.icon({
-    iconUrl: 'assets/purple.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/purple.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -146,8 +146,8 @@ var i5 = L.icon({
 });
 
 var i6 = L.icon({
-    iconUrl: 'assets/yellow.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/yellow.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -156,8 +156,8 @@ var i6 = L.icon({
 });
 
 var i7 = L.icon({
-    iconUrl: 'assets/pickuppoint.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/pickuppoint.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -166,8 +166,8 @@ var i7 = L.icon({
 });
 
 var i8 = L.icon({
-    iconUrl: 'assets/standingpoint.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/standingpoint.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 
@@ -176,8 +176,8 @@ var i8 = L.icon({
 });
 
 var i9 = L.icon({
-    iconUrl: 'assets/transition.png',
-    shadowUrl: 'assets/marker-shadow.png',
+    iconUrl: '/optimusbus/VehicleClient/assets/transition.png',
+    shadowUrl: '/optimusbus/VehicleClient/assets/marker-shadow.png',
     iconSize:     [25, 41], 
     shadowSize:   [41, 41],
     iconAnchor:   [12, 41], 

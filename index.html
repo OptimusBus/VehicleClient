@@ -3,8 +3,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
-<link rel="stylesheet" href="/css/style.css"/>
-<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="/optimusbus/VehicleClient/css/style.css"/>
+<link rel="stylesheet" href="/optimusbus/VehicleClient/css/font-awesome/css/font-awesome.min.css"/>
 </head>
 <body>
 	<div class="login-overlay">
@@ -12,6 +12,7 @@
 			<div class="title-login-box">
 				<p><i class="fa fa-lock"></i></p>
 				<p>Login</p>
+				<span class="login-response"></span>
 			</div>
 			<div class="body-login-box">
 				<p>Username</p>
@@ -23,10 +24,24 @@
 		</div>
 	</div>
 <div id="map" class="map"></div>
+<div class="vehicle-data">
+	<i class="fa fa-bars bars-menu"></i>
+	<div class="vehicle-collapse" style="display:none;">
+		<div class="vehicleid-box"></div>
+		<div class="vehiclestatus-box"></div>
+		<div class="occupancy-box"></div>
+		<div class="standingpoint-box"><i class="vestanding fa fa-map-marker"></i></div>
+	</div>
+</div>
 <div class="button-chooser">
 	<div class="single-button">
 		<div class="single-button-inner b-home">
 			<i class="butt fa fa-home"></i>
+		</div>
+	</div>
+	<div class="single-button">
+		<div class="single-button-inner b-support">
+			<i class="butt fa fa-life-ring"></i>
 		</div>
 	</div>
 	<div class="single-button">
@@ -78,14 +93,10 @@
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script src="https://unpkg.com/leaflet.icon.glyph@0.2.0/Leaflet.Icon.Glyph.js"></script>
-<script src="/app.js"></script>
-<script src="/icons.js"></script>
-<script src="/gui.js"></script>
+<script src="/optimusbus/VehicleClient/app.js"></script>
+<script src="/optimusbus/VehicleClient/icons.js"></script>
+<script src="/optimusbus/VehicleClient/gui.js"></script>
 
-
-<script>
-
-</script>
-
+<div class="loader-wrapper" style="display:none;"><img src="/optimusbus/VehicleClient/assets/loader.gif"></div>
 </body>
 </html>
