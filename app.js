@@ -171,6 +171,10 @@ function clearStandingPoints(){
     standingPointsGroup.clearLayers();
 }
 
+function clearPosition(){
+	positionGroup.clearLayers();
+}
+
 function showAllMarks(){
 	standingPoints.forEach(element => {
 		let tit = element.location.latitude + " " + element.location.longitude + " " + element.osmid;
@@ -209,7 +213,7 @@ function showAllStandings(){
     map.fitBounds([[45.5176331, 5.1322809], [45.98289006, 4.6349013]]);
 }
 
-function showCurrentPosition(){
+function showCurrentPosition(fit=true){
     positionGroup.clearLayers();
 	let position = calculatePosition();
 	L.marker(position, {icon: positionIcon, title: "Io", zIndexOffset: 1000}).bindPopup("Posizione Corrente").openPopup().addTo(positionGroup);
@@ -217,7 +221,7 @@ function showCurrentPosition(){
 	let bounds = calcBounds(waypoints);
 	let p1 = bounds[0];
 	let p2 = bounds[1];
-	map.fitBounds([[p1.x, p1.y], [p2.x, p2.y]]);
+	if(fit) map.fitBounds([[p1.x, p1.y], [p2.x, p2.y]]);
 }
 
 function showAllVehicles(){
@@ -344,8 +348,10 @@ function testMark(){
 
 function showRoute(){
 	routingControl.setWaypoints();
+	clearPosition();
 	let waypoints = [];
 	let route = thisRoute.route;
+	waypoints.push(L.latLng([thisVehicle.location.latitude, thisVehicle.location.longitude, 0]));
 	Object.entries(route).forEach(function(e){ 
 		element = e[1];
 		waypoints.push(L.latLng([element.location.latitude, element.location.longitude]));
@@ -354,19 +360,22 @@ function showRoute(){
 	let p1 = bounds[0];
 	let p2 = bounds[1];
 	routingControl.setWaypoints(waypoints);
+	//showCurrentPosition(false);
 	map.fitBounds([[p1.x, p1.y], [p2.x, p2.y]]);
 }
 
 function createRoutingControl(){
-	// 0 STANDING POINT
-	// 1 PICKUP POINT
-	// 2 TRANSITION
 	return L.Routing.control({
 		router: L.Routing.mapbox('pk.eyJ1Ijoic2Vuc2VsZXNzbWl0ZSIsImEiOiJja3VmbTY0MjcxZXM1MnFtdHYwdW8zZnlmIn0.ou1Jnfl5Yrx60E9aQHNfsg'),
 		useZoomParameter: true,
 		routeWhileDragging: false,
 		createMarker: function(i, wp) {
-			let x = i + 1;
+			let x = i;
+			if(wp.latLng.alt == 0){
+				return L.marker(wp.latLng, {
+					icon: positionIcon
+				}).bindPopup("Pickup Point, Waypoint numero: " + x).openPopup();
+			}
 			return L.marker(wp.latLng, {
 				icon: L.icon.glyph({ glyph: x, iconUrl: "/optimusbus/VehicleClient/assets/waypoint.png", glyphColor: 'black', glyphSize: '20px' })
 			}).bindPopup("Pickup Point, Waypoint numero: " + x).openPopup();
